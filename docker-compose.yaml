@@ -1,0 +1,29 @@
+version: '3'
+
+services:
+  db_app:
+    container_name: db_app
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready", "-d", "mydb" ]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    ports:
+      - "5000:5432"
+    environment:
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: postpass
+        POSTGRES_DB: mydb
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+    image: postgres:15.3-alpine3.18
+
+  app:
+    container_name: app
+    depends_on:
+      db_app:
+          condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://postgres:postpass@db_app:5432/mydb
+    command: python ./test_app.py
+    build: .
