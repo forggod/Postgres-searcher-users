@@ -2,14 +2,14 @@
 
 test:
 	docker-compose up -d db_app
-	docker-compose up app
+	sudo docker-compose up app
 
 build:
 	sudo docker-compose build
 
-# up:
-# 	docker-compose up -d db_app
-# 	docker-compose up -d app
+up:
+	docker-compose up -d db_app
+	sudo docker-compose up -d app
 
 down:
 	docker-compose down

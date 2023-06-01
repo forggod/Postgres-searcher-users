@@ -20,9 +20,6 @@ services:
 
   app:
     container_name: app
-    depends_on:
-      db_app:
-          condition: service_healthy
     environment:
       DATABASE_URL: postgresql://postgres:postpass@db_app:5432/mydb
     command: python ./test_app.py
